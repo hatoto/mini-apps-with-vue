@@ -1,4 +1,6 @@
-# proj01
+# mini-apps-with-vue
+
+用Vue開發的小遊戲和工具網站
 
 ## Project setup
 ```
@@ -32,3 +34,4 @@ npm run test:unit
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
