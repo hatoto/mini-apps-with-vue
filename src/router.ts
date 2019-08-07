@@ -21,5 +21,15 @@ export default new Router({
       // which is lazy-loaded when the route is visited.
       component: () => import(/* webpackChunkName: "about" */ './views/About.vue'),
     },
+    {
+      path: '/cardmatch',
+      name: 'Card Match',
+      component: () => import(/* webpackChunkName: "about" */ './views/CardMatchHome.vue'),
+    },
+    {
+      path: '/pokerorder',
+      name: 'Poker Order',
+      component: () => import(/* webpackChunkName: "about" */ './views/PokerCardMenHome.vue'),
+    },
   ],
 });
