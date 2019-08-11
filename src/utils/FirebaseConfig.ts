@@ -1,4 +1,4 @@
-import * as firebase from 'firebase/app';
+import firebase from 'firebase/app';
 import 'firebase/firestore'
 
 
@@ -14,7 +14,7 @@ export interface FirebaseConfig
 }
 
 //create a config file in 'firebaseConfig.json'
-var firebaseConfig : FirebaseConfig = require('./firebaseConfig.json');
+var firebaseConfig : FirebaseConfig = require('./firebaseConfigData.json');
 
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 

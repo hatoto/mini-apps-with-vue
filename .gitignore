@@ -22,4 +22,4 @@ yarn-error.log*
 
 #app config file
 
-firebaseConfig.json
+firebaseConfigData.json
