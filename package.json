@@ -18,6 +18,7 @@
     "bootstrap-vue": "^2.0.0-rc.27",
     "core-js": "^2.6.5",
     "css-toggle-switch": "^4.1.0",
+    "firebase": "^6.3.4",
     "jquery": "^3.4.1",
     "popper.js": "^1.15.0",
     "vue": "^2.6.10",

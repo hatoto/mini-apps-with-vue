@@ -5,57 +5,48 @@
       <b-jumbotron header="Marty玩具箱" lead="使用Vue製作的小遊戲和工具" >
         <!-- <p>使用Vue製作的小遊戲和工具</p> -->
       </b-jumbotron>
+      <button class="button" v-on:click="test">TEST</button>
     </div>
 
-    <div class="album py-5 bg-light">
-      <b-card-group deck>
-        <b-card
-          title="翻牌配對遊戲"
-          img-src="https://picsum.photos/600/300/?random=1"
-          img-alt="Image"
-          img-top
-          tag="article"
-          style="max-width: 20rem;"
-          class="mb-2"
-        >
-          <b-card-text>挑戰完全配對完成最速時間！</b-card-text>
+    <b-card-group deck>
+      <b-card
+        title="翻牌配對遊戲"
+        img-src="https://picsum.photos/600/300/?random=1"
+        img-alt="Image"
+        img-top
+        tag="article"
+        style="max-width: 20rem;"
+        class="mb-2"
+      >
+        <b-card-text>挑戰完全配對完成最速時間！</b-card-text>
 
-          <b-button href="/cardmatch" variant="primary">進入遊戲</b-button>
-        </b-card>
+        <b-button href="/cardmatch" variant="primary">進入遊戲</b-button>
+      </b-card>
 
-        <b-card
-          title="撲克牌記牌訓練"
-          img-src="https://picsum.photos/600/300/?random=2"
-          img-alt="Image"
-          img-top
-          tag="article"
-          style="max-width: 20rem;"
-          class="mb-2"
-        >
-          <b-card-text>你能記住撲克牌的出牌順序嗎？</b-card-text>
+      <b-card
+        title="撲克牌記牌訓練"
+        img-src="https://picsum.photos/600/300/?random=2"
+        img-alt="Image"
+        img-top
+        tag="article"
+        style="max-width: 20rem;"
+        class="mb-2"
+      >
+        <b-card-text>你能記住撲克牌的出牌順序嗎？</b-card-text>
 
-          <b-button href="/pokerorder" variant="primary">進入遊戲</b-button>
-        </b-card>
+        <b-button href="/pokerorder" variant="primary">進入遊戲</b-button>
+      </b-card>
 
-        <!-- <b-card bg-variant="success" text-variant="white" header="Success" class="text-center">
-          <b-card-text>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</b-card-text>
-        </b-card>-->
-      </b-card-group>
+      <!-- <b-card bg-variant="success" text-variant="white" header="Success" class="text-center">
+        <b-card-text>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</b-card-text>
+      </b-card> -->
+    </b-card-group>
+    <div class="bg-light">
     </div>
     <div class="mt-3"></div>
     <div class="mt-3"></div>
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+<script lang="ts" src="./HelloWorld.ts" />
 
-@Component
-export default class HelloWorld extends Vue {
-  @Prop() private msg!: string;
-}
-</script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-</style>
