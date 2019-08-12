@@ -17,8 +17,9 @@
           </div>
         </fieldset>
         <button class="button" v-on:click="startgame()">START</button>
-        <div class="timer">TIME:{{timeleft}}</div>
-        <div class="recordboard">
+        <div class="timer ml-10 mr-10">TIME:{{timeleft}}</div>
+        <button class="button" v-on:click="showRecords()">RECORDS</button>
+        <!-- <div class="recordboard">
           <span>
             Basic:{{bestB}}
             <template v-if="bestB != '-'">s</template>
@@ -31,7 +32,7 @@
             Hard:{{bestH}}
             <template v-if="bestH != '-'">s</template>
           </span>
-        </div>
+        </div>-->
       </div>
 
       <div class="container_match">
@@ -47,11 +48,28 @@
     </div>
 
     <b-modal ref="modal" hide-header hide-footer centered>
-      
       <div class="d-block text-center">
-        <h3>YA!! ALL MATCHED!! Time used: {{this.timeUsed}}</h3>
+        <h3>YA!! ALL MATCHED!! </h3>
+        <h3>Time : {{timeUsed}} s</h3>        
+        <template v-if="timeUsed < 60">
+          <b-form-input v-model="playerName" placeholder="Enter your name" maxlength="10" :formatter="format" trim></b-form-input>
+          <b-button variant="success" class="my-3" v-on:click="addRecord()">Add Record</b-button>
+        </template>
       </div>
-      
+    </b-modal>
+
+    <b-modal ref="records" hide-header hide-footer centered>
+      <b-tabs content-class="mt-3">
+        <b-tab title="Basic" active>
+          <b-table striped hover :items="recordsBasic"></b-table>
+        </b-tab>
+        <b-tab title="Medium">
+          <b-table striped hover :items="recordsMedium"></b-table>
+        </b-tab>
+        <b-tab title="Hard">
+          <b-table striped hover :items="recordsHard"></b-table>
+        </b-tab>
+      </b-tabs>
     </b-modal>
   </div>
 </template>
@@ -59,15 +77,17 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import OneCard from "@/components/OneCard.vue";
-import { BModal } from 'bootstrap-vue/src/components/modal';
-
+import { BModal } from "bootstrap-vue/src/components/modal";
+import { Mixins } from "vue-property-decorator";
+import CommonMixin from "@/utils/CommonMixin";
+import MyFirestoreMixin, { DocToCardMatchRecordMap } from "@/utils/MyFirestoreMixin";
 
 @Component({
   components: {
     OneCard
   }
 })
-export default class CardMatch extends Vue {
+export default class CardMatch extends Mixins(CommonMixin, MyFirestoreMixin) {
   @Prop() private msg!: string;
 
   private bestB: number = 0;
@@ -86,19 +106,33 @@ export default class CardMatch extends Vue {
     ["m", 9],
     ["h", 12]
   ]);
+
+  private levelNameMap: Map<string, string> = new Map([
+    ["b", "basic"],
+    ["m", "medium"],
+    ["h", "hard"]
+  ]);
   private currentCard: any = null;
 
   private timeHolder: any = null;
 
-    timeUsed : number = 0;
+  timeUsed: number = 0;
+
+  recordsBasic: {}[] = [];
+  recordsMedium: {}[] = [];
+  recordsHard: {}[] = [];
 
   $refs!: {
     cards: OneCard[];
     modal: BModal;
+    records: BModal;
   };
+
+  playerName: string = '';
 
   created() {
     this.iconAmount = this.levelIconAmtMap.get(this.level) || 6;
+    this.updateRecords();
   }
 
   levelclick(lv: string) {
@@ -161,6 +195,33 @@ export default class CardMatch extends Vue {
         }
       }
     }
+  }
+
+  showRecords() {
+    this.$refs.records.show();
+  }
+
+  updateRecords() {
+    ["basic", "medium", "hard"].forEach(level => {
+      this.getCardMatchRecords(
+        level,
+        "match_card_records",
+        DocToCardMatchRecordMap
+      )
+        .then(resolve => {
+          if( level === 'basic'){
+            this.recordsBasic = <{}[]>resolve;
+          }else if( level === 'medium'){
+            this.recordsMedium = <{}[]>resolve;
+          }else{
+            this.recordsHard = <{}[]>resolve;
+          }
+
+        })
+        .catch(reason => {
+          console.info(reason);
+        });
+    });
   }
 
   gameStart() {
@@ -233,6 +294,38 @@ export default class CardMatch extends Vue {
       array[randomIndex] = temporaryValue;
     }
     return array;
+  }
+
+  
+  format(value: string, event: any) {
+      value = value.replace(/[^A-Za-z0-9]/g, '-');
+      return value.toUpperCase()
+  }
+  
+
+  addRecord() {
+    console.info('addRecord......., playerName: ', this.playerName);
+
+    if( this.playerName.trim().length > 0){
+
+      const rec = {
+        name: this.playerName,
+        time: this.timeUsed
+      }
+
+      this.addCardMatchRecords(
+        this.levelNameMap.get(this.level) || 'basic',
+        "match_card_records",
+        rec
+      ).then( ref =>{
+        console.info('ref: ',ref);
+        this.updateRecords();
+      }).catch(reason=>{
+        console.error(reason)
+      })
+    }
+
+    this.$refs.modal.hide();
   }
 }
 </script>

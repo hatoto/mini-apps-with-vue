@@ -4,8 +4,7 @@
     <div>
       <b-jumbotron header="Marty玩具箱" lead="使用Vue製作的小遊戲和工具" >
         <!-- <p>使用Vue製作的小遊戲和工具</p> -->
-      </b-jumbotron>
-      <button class="button" v-on:click="test">TEST</button>
+      </b-jumbotron>      
     </div>
 
     <b-card-group deck>

@@ -14,6 +14,8 @@ import { faBook, faBolt, faCar, faCat, faCrow, faFeatherAlt, faHippo, faOilCan }
 import { faQuestionCircle, faPaperPlane } from '@fortawesome/free-regular-svg-icons';
 import { faCodepen, faEarlybirds, faFirefox } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { FormInputPlugin } from 'bootstrap-vue'
+
 
 library.add( faQuestionCircle, faBook, faBolt, faCar, faCat, faCrow, faFeatherAlt, faHippo, faOilCan, faPaperPlane,
   faCodepen, faEarlybirds, faFirefox);
@@ -22,6 +24,7 @@ Vue.component('font-awesome-icon', FontAwesomeIcon);
 Vue.config.productionTip = false;
 
 Vue.use(BootstrapVue)
+Vue.use(FormInputPlugin)
 
 new Vue({
   router,
