@@ -1,6 +1,11 @@
 # mini-apps-with-vue
 
-用Vue開發的小遊戲和工具網站
+**用Vue開發的小遊戲和工具網站**
+
+[APP Link](https://modontoys.web.app/)
+
+使用Firebase置放Web APP，並用Cloud Firestore紀錄遊戲結果。
+
 
 ## Project setup
 ```

@@ -4,48 +4,26 @@ import db from './FirebaseConfig';
 @Component
 export default class MyFirestoreMixin extends Vue {
 
-    getCardMatchRecords(level: string, tableName: string, docToCardMatchRecordMap: Function) {
+
+    addCardGameRecords(level: string, tableName: string, record: GameRecord) {
         return new Promise(function (resolve, reject) {
-
-            db.collection(tableName).doc(level).collection('records').orderBy('time', 'asc').limit(10).get().then(function (doc) {
-                let records: {}[] = [];
-                if (!doc.empty) {
-                    doc.docs.forEach(querySnapshot => {
-                        records.push(docToCardMatchRecordMap(querySnapshot));
-                    });
-                    resolve(records);
-                } else {
-                    reject("Record not found");
-                }
-            }).catch(function (error) {
-                reject(error);
-            });
-
-        });
-    }
-
-    addCardMatchRecords(level: string, tableName: string, record: GameRecord) {
-        //console.info(level, tableName, record);
-        return new Promise(function (resolve, reject) {
-
             db.collection(tableName).doc(level).collection('records').add(record).then(function (ref) {
                 resolve(ref);
             }).catch(function (error) {
                 reject(error);
             });
-
         });
     }
 
-    
-    getPokerCardRecords(level: string, tableName: string, docToPokerRecordMap: Function) {
+
+    getCardGameRecords(level: string, tableName: string, docToCardGameRecordMap: Function) {
         return new Promise(function (resolve, reject) {
 
             db.collection(tableName).doc(level).collection('records').orderBy('time', 'asc').limit(10).get().then(function (doc) {
                 let records: {}[] = [];
                 if (!doc.empty) {
                     doc.docs.forEach(querySnapshot => {
-                        records.push(docToPokerRecordMap(querySnapshot));
+                        records.push(docToCardGameRecordMap(querySnapshot));
                     });
                     resolve(records);
                 } else {
@@ -59,28 +37,16 @@ export default class MyFirestoreMixin extends Vue {
     }
 
 
-    addPokerMenRecords(level: string, tableName: string, record: PokerRecord) {
-        //console.info(level, tableName, record);
-        return new Promise(function (resolve, reject) {
 
-            db.collection(tableName).doc(level).collection('records').add(record).then(function (ref) {
-                resolve(ref);
-            }).catch(function (error) {
-                reject(error);
-            });
-
-        });
-    }
 
 }
 
 
 export class GameRecord {
-    //id: string = '';
-    name: string = '';
-    time?: number;
+    name?: string;
+    time?: string;
 }
-export function DocToCardMatchRecordMap(doc: any): GameRecord {
+export function docToCardGameRecordMap(doc: any): GameRecord {
     var rowData = doc.data();
     var record = {
         name: rowData.name,
@@ -89,16 +55,4 @@ export function DocToCardMatchRecordMap(doc: any): GameRecord {
     return record;
 }
 
-export class PokerRecord {
-    name?: string;
-    time?: string;
-}
 
-export function DocToPokerRecordMap(doc: any): GameRecord {
-    var rowData = doc.data();
-    return {        
-        name: rowData.name,
-        time: rowData.time
-    };
-
-}

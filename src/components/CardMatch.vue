@@ -80,7 +80,7 @@ import OneCard from "@/components/OneCard.vue";
 import { BModal } from "bootstrap-vue/src/components/modal";
 import { Mixins } from "vue-property-decorator";
 import CommonMixin from "@/utils/CommonMixin";
-import MyFirestoreMixin, { DocToCardMatchRecordMap } from "@/utils/MyFirestoreMixin";
+import MyFirestoreMixin, { docToCardGameRecordMap } from "@/utils/MyFirestoreMixin";
 
 @Component({
   components: {
@@ -203,10 +203,10 @@ export default class CardMatch extends Mixins(CommonMixin, MyFirestoreMixin) {
 
   updateRecords() {
     ["basic", "medium", "hard"].forEach(level => {
-      this.getCardMatchRecords(
+      this.getCardGameRecords(
         level,
         "match_card_records",
-        DocToCardMatchRecordMap
+        docToCardGameRecordMap
       )
         .then(resolve => {
           if( level === 'basic'){
@@ -219,7 +219,7 @@ export default class CardMatch extends Mixins(CommonMixin, MyFirestoreMixin) {
 
         })
         .catch(reason => {
-          console.info(reason);
+          //console.info(reason);
         });
     });
   }
@@ -303,22 +303,20 @@ export default class CardMatch extends Mixins(CommonMixin, MyFirestoreMixin) {
   }
   
 
-  addRecord() {
-    console.info('addRecord......., playerName: ', this.playerName);
+  addRecord() {    
 
     if( this.playerName.trim().length > 0){
 
       const rec = {
         name: this.playerName,
-        time: this.timeUsed
+        time: String(this.timeUsed)
       }
 
-      this.addCardMatchRecords(
+      this.addCardGameRecords(
         this.levelNameMap.get(this.level) || 'basic',
         "match_card_records",
         rec
-      ).then( ref =>{
-        console.info('ref: ',ref);
+      ).then( ref =>{        
         this.updateRecords();
       }).catch(reason=>{
         console.error(reason)

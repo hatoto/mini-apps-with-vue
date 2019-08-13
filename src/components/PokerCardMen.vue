@@ -11,9 +11,11 @@
           <a></a>
         </div>
       </fieldset>
-      <button class="button" v-on:click="startGame">START</button>
-      <span class="timer">TIME:{{timeCount}}</span>
-      <b-button variant="success" class="my-3" v-on:click="showRecords()">RECORDS</b-button>
+      <section class="control-panel">        
+        <b-button variant="success"  v-on:click="startGame">START</b-button>
+        <div class="timer">TIME:{{timeCount}}</div>
+        <b-button variant="success"  v-on:click="showRecords">RECORDS</b-button>
+      </section>
     </div>
 
     <section class="card_deck_wrap" v-if="isReading && gameStarted">
@@ -22,7 +24,10 @@
         <div class="lower-card" v-for="(l, index) in lowerCardCnt" :key="'lowerCardCnt:'+index"></div>
 
         <div class="cardQ" v-on:click="clickNext()" v-bind:class="{'red_card': isRed}">
-          <div class="card_content_q">{{card_no}}</div>
+          <div class="card_content_q"
+               unselectable="on"
+              onselectstart="return false;"
+              onmousedown="return false;">{{card_no}}</div>
           <div
             class="card_content_q symbol"
             v-html="main_shape"
@@ -93,7 +98,7 @@ import OnePoker from "@/components/OnePoker.vue";
 import { BModal } from "bootstrap-vue/src/components/modal";
 import { Mixins } from "vue-property-decorator";
 import CommonMixin from "@/utils/CommonMixin";
-import MyFirestoreMixin, { DocToCardMatchRecordMap } from "@/utils/MyFirestoreMixin";
+import MyFirestoreMixin, { docToCardGameRecordMap } from "@/utils/MyFirestoreMixin";
 
 @Component({
   components: {
@@ -299,8 +304,7 @@ export default class PokerCardMen extends Mixins(CommonMixin, MyFirestoreMixin) 
 
   getQuestions() {
     this.ansOfQuestion = [];
-    this.cards_using_backup.forEach((c, index) => {
-      console.info(c, index);
+    this.cards_using_backup.forEach((c, index) => {      
       this.ansOfQuestion.push({
         shape: c[0],
         idx: c[1],
@@ -321,16 +325,16 @@ export default class PokerCardMen extends Mixins(CommonMixin, MyFirestoreMixin) 
 
   updateRecords() {
     this.levelnames.forEach(level => {
-      this.getPokerCardRecords(
+      this.getCardGameRecords(
         level,
         "poker_card_record",
-        DocToCardMatchRecordMap
+        docToCardGameRecordMap
       )
         .then(resolve => {
           this.pokerRecords.setRec(level, <{}[]>resolve);          
         })
         .catch(reason => {
-          console.info(level,' : ' ,reason);
+          //console.info(level,' : ' ,reason);
         });
     });
   }
@@ -341,16 +345,12 @@ export default class PokerCardMen extends Mixins(CommonMixin, MyFirestoreMixin) 
   }
 
   addRecord() {
-    console.info('addRecord......., playerName: ', this.playerName);
-
     if( this.playerName.trim().length > 0){
 
       const rec = {
         name: this.playerName,
         time: this.timeCount
       }
-      console.info('addRecord.., rec: ', rec);
-
       let levelName = 'five';
       
       this.levelNameMap.forEach((value, key, map) => {        
@@ -358,15 +358,11 @@ export default class PokerCardMen extends Mixins(CommonMixin, MyFirestoreMixin) 
           levelName = key;
         }
       });
-
-      console.info('addRecord.., levelName: ', levelName);
-
-       this.addPokerMenRecords(
+       this.addCardGameRecords(
         levelName,
         "poker_card_record",
         rec
       ).then( ref =>{
-        console.info('ref: ',ref);
         this.updateRecords();
       }).catch(reason=>{
         console.error(reason)
@@ -387,7 +383,6 @@ export class PokerRecords {
   full: {}[] = [];
 
   setRec( level:string, record: {}[]){
-    console.info( 'record: ', record);
     if( level === 'five'){
       this.five = record;
     }else if( level === 'ten' ){
