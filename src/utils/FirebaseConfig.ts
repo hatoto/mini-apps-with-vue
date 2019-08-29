@@ -1,7 +1,7 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore'
 import 'firebase/auth'
-
+import * as configdata from './firebaseConfigData.json'
 
 export interface FirebaseConfig
 {
@@ -15,7 +15,19 @@ export interface FirebaseConfig
 }
 
 //create a config file named 'firebaseConfig.json' in same directory
-var firebaseConfig : FirebaseConfig = require('./firebaseConfigData.json');
+//dataformat in firebaseConfig.json
+/**
+  {
+   "data":{
+      "apiKey": "xxxxxx",
+      "authDomain": "xxxx.firebaseapp.com",
+      ......
+    }
+  } 
+  
+ */
+
+var firebaseConfig : FirebaseConfig = <FirebaseConfig>configdata.data;
 
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 firebaseApp.auth().signInAnonymously();
