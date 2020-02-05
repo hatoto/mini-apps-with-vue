@@ -36,6 +36,19 @@
         <b-button href="/pokerorder" variant="primary">進入遊戲</b-button>
       </b-card>
 
+      <b-card
+        title="數獨"
+        img-src="https://picsum.photos/600/300/?random=3"
+        img-alt="Image"
+        img-top
+        tag="article"
+        style="max-width: 20rem;"
+        class="mb-2"
+      >
+        <b-card-text>簡易的數獨</b-card-text>
+
+        <b-button href="/sudoku" variant="primary">進入遊戲</b-button>
+      </b-card>
       <!-- <b-card bg-variant="success" text-variant="white" header="Success" class="text-center">
         <b-card-text>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</b-card-text>
       </b-card> -->

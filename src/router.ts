@@ -31,5 +31,10 @@ export default new Router({
       name: 'Poker Order',
       component: () => import(/* webpackChunkName: "about" */ './views/PokerCardMenHome.vue'),
     },
+    {
+      path: '/sudoku',
+      name: 'Easy Sudoku',
+      component: () => import(/* webpackChunkName: "about" */ './views/SudokuHome.vue'),
+    }
   ],
 });
